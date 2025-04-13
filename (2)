@@ -1,0 +1,33 @@
+``
+def egg_drop(floors, eggs):
+    dp = [[0 for _ in range(eggs + 1)] for _ in range(floors + 1)]
+
+    for i in range(1, floors + 1):
+        dp[i][1] = i  
+        dp[i][0] = 0  
+
+    for j in range(1, eggs + 1):
+        dp[1][j] = 1  
+        dp[0][j] = 0  
+
+    for i in range(2, floors + 1):
+        for j in range(2, eggs + 1):
+            dp[i][j] = float('inf')
+            low = 1
+            high = i
+            while low <= high:
+                mid = (low + high) // 2
+                res = 1 + max(dp[mid - 1][j - 1], dp[i - mid][j])
+                if res < dp[i][j]:
+                    dp[i][j] = res
+                if dp[mid - 1][j - 1] < dp[i - mid][j]:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+
+    return dp[floors][eggs]
+
+floors = 102
+eggs = 7
+print(f"Minimum number of attempts required: {egg_drop(floors, eggs)}")
+```
